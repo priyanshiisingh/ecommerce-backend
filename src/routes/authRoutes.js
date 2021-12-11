@@ -4,6 +4,7 @@ const router = express.Router();
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import isAdmin from "../middlewares/isAdmin";
+import { body, validationResult } from "express-validator";
 
 /*
 type : GET
@@ -18,7 +19,7 @@ router.get("/users", isAdmin, async (req, res) => {
     res.json({ users });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ users: {} });
+    res.status(500).json({ users: [] });
   }
 });
 
@@ -29,29 +30,39 @@ params: none
 isProtected : false (admin) 
 */
 
-router.post("/signup", async (req, res) => {
-  try {
-    const { firstName, lastName, email, password } = req.body;
+router.post(
+  "/signup",
+  body("firstName").isLength({ min: 5 }),
+  body("email").isEmail(),
+  body("password").isLength({ min: 8 }),
+  async (req, res) => {
+    const { errors } = validationResult(req);
+    if (errors.length > 0)
+      return res.status(403).json({ errors, message: "Bad request" });
 
-    const salt = await bcrypt.genSalt(5);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    console.log(hashedPassword);
+    try {
+      const { firstName, lastName, email, password } = req.body;
 
-    const user = new User({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-    });
+      const salt = await bcrypt.genSalt(5);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      console.log(hashedPassword);
 
-    await user.save();
+      const user = new User({
+        firstName,
+        lastName,
+        email,
+        password: hashedPassword,
+      });
 
-    res.json({ user });
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ users: {} });
+      await user.save();
+
+      res.json({ user });
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ users: [] });
+    }
   }
-});
+);
 
 /*
 type : POST
