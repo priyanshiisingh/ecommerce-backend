@@ -139,4 +139,27 @@ router.delete("/delete/:id", async (req, res) => {
   }
 });
 
+// /*
+// type : PUT
+// path : /api/v1/product/updateStock/:id
+// params : id
+// isProtected: true (admin)
+// */
+
+// router.put('/updateStock/:id'
+//     , async (req, res) => {
+//         const { id } = req.params
+//         try {
+//             const category = await Product.findByIdAndRemove(id)
+//             res.status(200).json({
+//                 category, message: "deleted category in DB"
+//             })
+//         } catch (error) {
+//             return res.status(500).json({
+//                 category: null,
+//                 message: "Unable to delete category in DB"
+//             })
+//         }
+//     })
+
 export default router;
