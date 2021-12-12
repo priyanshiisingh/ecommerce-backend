@@ -5,6 +5,7 @@ import connectdb from "./services/mongodb/connectDB";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import categoryRoutes from "./routes/categoryRoutes";
+import productsRoutes from "./routes/productsRoutes";
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(express.json());
 //route to handle auth request
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
+app.use("/api/v1/product", productsRoutes);
 
 app.listen(PORT, (req, res) => {
   console.log(`Server listening to PORT ${PORT}`);
