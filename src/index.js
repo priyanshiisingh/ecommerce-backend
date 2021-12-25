@@ -21,6 +21,8 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/product", productsRoutes);
 
+console.log("hi");
+
 app.listen(PORT, (req, res) => {
   console.log(`Server listening to PORT ${PORT}`);
 });
