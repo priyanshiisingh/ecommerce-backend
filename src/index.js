@@ -23,6 +23,10 @@ app.use("/api/v1/product", productsRoutes);
 
 console.log("hi");
 
+app.get("/", (req, res) => {
+  res.send(`server listening to PORT ${PORT}`);
+});
+
 app.listen(PORT, (req, res) => {
   console.log(`Server listening to PORT ${PORT}`);
 });
